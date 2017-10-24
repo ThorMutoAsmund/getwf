@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+.thor {
+    color: blue;
+}
+.rolf {
+    color: blue;
+}
+
+.ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form)  {
+    border-left: 5px solid #a94442; /* red */
+}
+
+h1,h2 {
+    font-weight: bold
+}
+
+a:hover {
+    cursor:pointer;
+}

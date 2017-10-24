@@ -1,0 +1,5 @@
+Redux
+
+Find ud af hvordan reject skal bruges
+
+async await i stedet for .then

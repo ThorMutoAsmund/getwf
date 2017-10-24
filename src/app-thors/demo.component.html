@@ -1,0 +1,48 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div class="container" style="margin:10px">
+  <div class="row">
+    <h1>
+      Welcome to {{title}}!
+    </h1>
+    <first></first>
+    <div><snake [size]="{ width: 100, height: 100 }"></snake></div>
+    <button (click)="buttonClick($event)">Klik her </button>
+    <div *ngIf="showFrog"><frog width="200"></frog></div>
+    <div [class.thor]="showFrog">Frog is showing when blue</div>
+    <input #firstInput />
+    <input [value]="opt?.id" />
+    <input [ngModel]="opt?.name" />
+    <select [(ngModel)]="opt">
+        <option *ngFor="let option of options" [ngValue]="option">{{option.name}} ({{option.id}})</option>
+    </select>
+  </div>
+  <div class="row">
+      <h2>{{'FOR/SWITCH example' | scramble}}</h2>
+      <p style="font-weight:bold">Today is {{today | date:dateFormat}}</p>
+      <p style="font-weight:bold">In my wallet is {{wallet | currency:"DKK" | lowercase}}</p>
+      <p>Your IP address is: {{'ip' | getData:'ip'}}
+      <br/>
+      Time is now: {{'date' | getData:'time'}}<br/>
+      Thanks to: http://www.jsontest.com</p>
+      <ul>
+          <li *ngFor="let item of [1,2,3,4,5,6], let index=index, let last=last, let even=even">
+            <span  [myBold]="index % 2 == 1">{{item}}</span>
+            <ng-container *ngIf="item == 2">Value IS 2</ng-container>
+            <ng-container *ngIf="item == 5">
+                Value is 5
+            </ng-container>
+            <ng-container [ngSwitch]="item">
+                <ng-container *ngSwitchCase="1">Value IS 1</ng-container>
+                <ng-container *ngSwitchCase="3">Value IS 3</ng-container>
+                <ng-container *ngSwitchCase="4">Value IS 4</ng-container>
+                <ng-container *ngSwitchDefault>Value IS something else</ng-container>
+            </ng-container>
+            <div *myUnless="item == 2">Value ISNOT 2</div>
+          </li>
+      </ul>
+  </div>
+  <div class="row">
+    <h2>Form example</h2>
+    <testform></testform>
+  </div>
+</div>
