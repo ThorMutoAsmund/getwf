@@ -13,8 +13,16 @@ export class MeetupAuthenticateComponent {
     isSubmitting: boolean;
 
     async onFormSubmit(form) {
-        this.isSubmitting = true;
-        let result = await this.authenticationProvider.authenticate(form.value.userName, form.value.password);
+        let result;
+        try {
+            this.isSubmitting = true;
+            result = await this.authenticationProvider.authenticate(form.value.userName, form.value.password);
+        }
+        catch (reason) {
+            this.isSubmitting = false;
+            alert(reason);
+            return;
+        }
         
         this.isSubmitting = false;
         if (result) {

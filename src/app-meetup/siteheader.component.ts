@@ -12,7 +12,8 @@ export class SiteHeaderComponent {
     authenticatedName: string;
 
     constructor(private authenticationProvider: AuthenticationProvider, private router: Router) {
-        this.authenticationInfo = this.authenticationProvider.getAuthenticationInfo();
+        // Get authinfo. If rejected, catch the error and ignore it. This will give a null object and the header will show "Log in"
+        this.authenticationInfo = this.authenticationProvider.getAuthenticationInfo().catch(reason => {});
     }
 
     private logOut() {

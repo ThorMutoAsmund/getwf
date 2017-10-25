@@ -2,5 +2,7 @@ Redux
 
 Find ud af hvordan reject skal bruges
 
+Error handling, error flow
+
 Look at generators again in an async/await context
 https://basarat.gitbooks.io/typescript/docs/async-await.html

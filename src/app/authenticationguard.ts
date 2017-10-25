@@ -16,7 +16,6 @@ export class AuthenticationGuard implements CanActivate {
         private authenticationProvider: AuthenticationProvider,
         private router: Router
     ) {
-        
     }
 
     public async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
@@ -24,7 +23,14 @@ export class AuthenticationGuard implements CanActivate {
             return true;
         }
         else {
-            let info = await this.authenticationProvider.getAuthenticationInfo();
+            let info: any;
+            try {
+                info = await this.authenticationProvider.getAuthenticationInfo();
+            }
+            catch (reason) {
+                return false
+            }
+            
             if (info.isAuthenticated && state.url === `/${authenticatePath}`) {
                 this.router.navigate(['']);
                 return false;
@@ -41,29 +47,4 @@ export class AuthenticationGuard implements CanActivate {
             }
         }
     }
-
-    // canA2ctivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    //     return new Promise(async (resolve, reject) => {
-    //         if (state.url === `/${createUserPath}`) {
-    //             resolve(true);
-    //         }
-    //         else {
-    //             let info = await this.authenticationProvider.getAuthenticationInfo();
-    //             if (info.isAuthenticated && state.url === `/${authenticatePath}`) {
-    //                 this.router.navigate(['']);
-    //                 resolve(false);
-    //             }
-    //             else if (!info.isAuthenticated && state.url === `/${authenticatePath}`) {
-    //                 resolve(true);
-    //             }
-    //             else if (info.isAuthenticated) {
-    //                 resolve(true);
-    //             }
-    //             else {
-    //                 this.router.navigate([`./${authenticatePath}`]);
-    //                 resolve(false);
-    //             }
-    //         }
-    //     });
-    // }
 }

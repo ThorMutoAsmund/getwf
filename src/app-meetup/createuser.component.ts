@@ -13,8 +13,17 @@ export class CreateUserComponent {
     isSubmitting: boolean;
   
     async onFormSubmit(form) {
-        this.isSubmitting = true;
-        let result = await this.authenticationProvider.createAndAuthenticateUser(form.value.userName, form.value.fullName, form.value.password)
+        let result;
+        try {
+            this.isSubmitting = true;
+            result = await this.authenticationProvider.createAndAuthenticateUser(form.value.userName, form.value.fullName, form.value.password)
+        }
+        catch (reason) {
+            this.isSubmitting = false;
+            alert(reason);
+            return;
+        }
+
         this.isSubmitting = false;
         if (result) {
             this.router.navigate(['/dashboard']);

@@ -77,21 +77,21 @@ export class AuthenticationProvider {
     // }
 
     public async authenticate(userName: string, password: string): Promise<boolean> {
+        if (!userName) throw "Null or empty user name";
+        if (!password) throw "Null or empty password";
+        
         let user = await this.meetupDatabase.findUser(userName);
-        console.log("Got user", user);
         if (user && user.Password === md5(password)) {
             let token = UUID.UUID();
 
             this.setAuthCookies(userName, token);
             
-            this.meetupDatabase.updateUserToken(userName, token);
+            await this.meetupDatabase.updateUserToken(userName, token);
 
             this.userCache[userName] = user;
             return true;
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     public removeAuthentication() {
@@ -100,7 +100,10 @@ export class AuthenticationProvider {
         //delete this.userCache[userName];
     }
     
-    public async createAndAuthenticateUser(userName: string, fullName: string,  password: string): Promise<boolean> {
+    public async createAndAuthenticateUser(userName: string, fullName: string | null, password: string): Promise<boolean> {
+        if (!userName) throw "Null or empty user name";
+        if (!password) throw "Null or empty password";
+
         let user = await this.meetupDatabase.findUser(userName);
         if (user) {
             return false;
@@ -111,7 +114,7 @@ export class AuthenticationProvider {
 
             this.setAuthCookies(userName, token);
 
-            this.meetupDatabase.updateUserToken(userName, token);
+            await this.meetupDatabase.updateUserToken(userName, token);
 
             //this.userCache[userName] = user;
             return true;
