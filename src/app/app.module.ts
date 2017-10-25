@@ -6,7 +6,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+
 import { MeetupModule } from '../app-meetup/meetup.module';
 
 import { AuthenticationProvider } from '../app-meetup/authenticationprovider';
@@ -32,7 +33,7 @@ import { AuthenticationGuard } from './authenticationguard';
       { enableTracing: false }
     ),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFirestoreModule,
+    AngularFireDatabaseModule,
     MeetupModule
   ],
   providers: [ AuthenticationProvider, AuthenticationGuard, CookieService, MeetupDatabase ],

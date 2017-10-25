@@ -12,7 +12,7 @@ export class SiteHeaderComponent {
     authenticatedName: string;
 
     constructor(private authenticationProvider: AuthenticationProvider, private router: Router) {
-        this.authenticationInfo = this.authenticationProvider.authenticationInfo;
+        this.authenticationInfo = this.authenticationProvider.getAuthenticationInfo();
     }
 
     private logOut() {

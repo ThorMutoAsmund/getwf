@@ -20,55 +20,78 @@ export class AuthenticationProvider {
         this.cookieService.put(userTokenCookieKey, token);
     }
 
-    get authenticationInfo() : Promise<any> {
-        return new Promise((resolve, reject) => {
-            let userName = this.cookieService.get(userNameCookieKey);
-            if (!userName || userName === '') {
-                resolve({isAuthenticated:false});
-                return;
-            }
-            
-            let token = this.cookieService.get(userTokenCookieKey);
-            if (!token || token === '') {
-                resolve({isAuthenticated:false});
-                return;
-            }
+    public async getAuthenticationInfo() : Promise<any> {
+        let userName = this.cookieService.get(userNameCookieKey);
+        if (!userName || userName === '') {
+            return { isAuthenticated:false };
+        }
+        
+        let token = this.cookieService.get(userTokenCookieKey);
+        if (!token || token === '') {
+            return { isAuthenticated:false };
+        }
 
-            if (this.userCache[userName] && this.userCache[userName].Token === token) {
-                resolve({isAuthenticated:true, user:this.userCache[userName]});
-                return;
-            }
-    
-            this.meetupDatabase.findUser(userName).then(user => {
-                if (user && user.Token === token) {
-                    this.userCache[userName] = user;
-                    resolve({isAuthenticated:true, user:user});
-                }
-                else {
-                    resolve({isAuthenticated:false});
-                }
-            });
-        });
+        if (this.userCache[userName] && this.userCache[userName].Token === token) {
+            return { isAuthenticated:true, user:this.userCache[userName] };
+        }
+
+        let user = await this.meetupDatabase.findUser(userName);
+        if (user && user.Token === token) {
+            this.userCache[userName] = user;
+            return { isAuthenticated:true, user:user };
+        }
+        else {
+            return { isAuthenticated:false };
+        }
     }
 
-    public authenticate(userName: string, password: string): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            this.meetupDatabase.findUser(userName).then(user => {
-                if (user && user.Password === md5(password)) {
-                    let token = UUID.UUID();
+    // get authenticationInfo() : Promise<any> {
+    //     return new Promise((resolve, reject) => {
+    //         let userName = this.cookieService.get(userNameCookieKey);
+    //         if (!userName || userName === '') {
+    //             resolve({isAuthenticated:false});
+    //             return;
+    //         }
+            
+    //         let token = this.cookieService.get(userTokenCookieKey);
+    //         if (!token || token === '') {
+    //             resolve({isAuthenticated:false});
+    //             return;
+    //         }
 
-                    this.setAuthCookies(userName, token);
-                    
-                    this.meetupDatabase.updateUserToken(userName, token);
+    //         if (this.userCache[userName] && this.userCache[userName].Token === token) {
+    //             resolve({isAuthenticated:true, user:this.userCache[userName]});
+    //             return;
+    //         }
+    
+    //         this.meetupDatabase.findUser(userName).t_hen(user => {
+    //             if (user && user.Token === token) {
+    //                 this.userCache[userName] = user;
+    //                 resolve({isAuthenticated:true, user:user});
+    //             }
+    //             else {
+    //                 resolve({isAuthenticated:false});
+    //             }
+    //         });
+    //     });
+    // }
 
-                    this.userCache[userName] = user;
-                    resolve(true);
-                }
-                else {
-                    resolve(false);
-                }
-            });
-        });
+    public async authenticate(userName: string, password: string): Promise<boolean> {
+        let user = await this.meetupDatabase.findUser(userName);
+        console.log("Got user", user);
+        if (user && user.Password === md5(password)) {
+            let token = UUID.UUID();
+
+            this.setAuthCookies(userName, token);
+            
+            this.meetupDatabase.updateUserToken(userName, token);
+
+            this.userCache[userName] = user;
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public removeAuthentication() {
@@ -77,25 +100,21 @@ export class AuthenticationProvider {
         //delete this.userCache[userName];
     }
     
-    public createAndAuthenticateUser(userName: string, fullName: string,  password: string): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            this.meetupDatabase.findUser(userName).then(user => {
-                if (user) {
-                    resolve(false);
-                }
-                else {
-                    this.meetupDatabase.createUser(userName, fullName, md5(password)).then(() => {
-                        let token = UUID.UUID();
-    
-                        this.setAuthCookies(userName, token);
-            
-                        this.meetupDatabase.updateUserToken(userName, token);
-    
-                        //this.userCache[userName] = user;
-                        resolve(true);
-                    });
-                }
-            });
-        });
+    public async createAndAuthenticateUser(userName: string, fullName: string,  password: string): Promise<boolean> {
+        let user = await this.meetupDatabase.findUser(userName);
+        if (user) {
+            return false;
+        }
+        else {
+            await this.meetupDatabase.createUser(userName, fullName, md5(password));
+            let token = UUID.UUID();
+
+            this.setAuthCookies(userName, token);
+
+            this.meetupDatabase.updateUserToken(userName, token);
+
+            //this.userCache[userName] = user;
+            return true;
+        }
     }
 }

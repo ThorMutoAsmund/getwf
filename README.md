@@ -73,3 +73,7 @@ https://firebase.google.com/docs/firestore/rtdb-vs-firestore
 
 https://cloud.google.com/firestore/docs/query-data/get-data
 https://blog.angular.io/improved-querying-and-offline-data-with-angularfirestore-dab8e20a4a06
+
+## When to reject a promise
+
+https://stackoverflow.com/questions/17293546/when-to-reject-resolve-a-promise

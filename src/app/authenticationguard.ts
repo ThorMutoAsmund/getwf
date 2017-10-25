@@ -19,28 +19,51 @@ export class AuthenticationGuard implements CanActivate {
         
     }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            console.log(state.url);
-            this.authenticationProvider.authenticationInfo.then(info => {
-                if (info.isAuthenticated && state.url === `/${authenticatePath}`) {
-                    this.router.navigate(['']);
-                    resolve(false);
-                }
-                else if (!info.isAuthenticated && state.url === `/${authenticatePath}`) {
-                    resolve(true);
-                }
-                else if (state.url === `/${createUserPath}`) {
-                    resolve(true);
-                }
-                else if (info.isAuthenticated) {
-                    resolve(true);
-                }
-                else {
-                    this.router.navigate([`./${authenticatePath}`]);
-                    resolve(false);
-                }
-            })
-        });
+    public async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+        if (state.url === `/${createUserPath}`) {
+            return true;
+        }
+        else {
+            let info = await this.authenticationProvider.getAuthenticationInfo();
+            if (info.isAuthenticated && state.url === `/${authenticatePath}`) {
+                this.router.navigate(['']);
+                return false;
+            }
+            else if (!info.isAuthenticated && state.url === `/${authenticatePath}`) {
+                return true;
+            }
+            else if (info.isAuthenticated) {
+                return true;
+            }
+            else {
+                this.router.navigate([`./${authenticatePath}`]);
+                return false;
+            }
+        }
     }
+
+    // canA2ctivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+    //     return new Promise(async (resolve, reject) => {
+    //         if (state.url === `/${createUserPath}`) {
+    //             resolve(true);
+    //         }
+    //         else {
+    //             let info = await this.authenticationProvider.getAuthenticationInfo();
+    //             if (info.isAuthenticated && state.url === `/${authenticatePath}`) {
+    //                 this.router.navigate(['']);
+    //                 resolve(false);
+    //             }
+    //             else if (!info.isAuthenticated && state.url === `/${authenticatePath}`) {
+    //                 resolve(true);
+    //             }
+    //             else if (info.isAuthenticated) {
+    //                 resolve(true);
+    //             }
+    //             else {
+    //                 this.router.navigate([`./${authenticatePath}`]);
+    //                 resolve(false);
+    //             }
+    //         }
+    //     });
+    // }
 }

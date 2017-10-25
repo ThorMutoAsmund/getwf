@@ -12,17 +12,15 @@ export class CreateUserComponent {
 
     isSubmitting: boolean;
   
-    onFormSubmit(form) {
+    async onFormSubmit(form) {
         this.isSubmitting = true;
-        this.authenticationProvider.createAndAuthenticateUser(form.value.userName, form.value.fullName, form.value.password).then(result => {
-            this.isSubmitting = false;
-            if (result) {
-                this.router.navigate(['/dashboard']);
-            }
-            else {
-                alert("Could not create user. Maybe the user name has already been taken?");
-            }
-        });
-    }
-  
+        let result = await this.authenticationProvider.createAndAuthenticateUser(form.value.userName, form.value.fullName, form.value.password)
+        this.isSubmitting = false;
+        if (result) {
+            this.router.navigate(['/dashboard']);
+        }
+        else {
+            alert("Could not create user. Maybe the user name has already been taken?");
+        }
+    }  
 }
