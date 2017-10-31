@@ -1,0 +1,116 @@
+<site-header></site-header>
+<section class="body clearfix">
+    <h1>Create meetup - general data</h1>
+    <p>Follow the wizard to set up your meetup.</p>
+    <div class="col-xs-offset-0 col-xs-12 col-md-offset-2 col-md-8">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">{{stepTitles[createStep]}}</div>
+            <div class="panel-body">
+                <form #userForm="ngForm" (ngSubmit)="onFormSubmit(userForm)">
+                    <div [hidden]="createStep != 0">
+                        <p>Please fill in all the required fields. You can also select optional meetup data.</p>
+                        <p></p>
+                        <div>
+                            <mat-form-field style="width: 100%">
+                                <input matInput name="title" placeholder="Meetup title" [disabled]="isSubmitting" ngModel required >
+                            </mat-form-field>
+                        </div>
+                        <!-- <label for="title">Title</label> -->
+                        <!-- <input class="form-control" name="title" [disabled]="isSubmitting" placeholder="Enter desired meetup title" ngModel required> -->
+                        <div>
+                            <mat-form-field style="width: 100%">
+                                <textarea matInput name="description" placeholder="Description" [disabled]="isSubmitting" ngModel required></textarea>
+                            </mat-form-field>
+                        </div>
+                        <!-- <label for="description">Description</label>
+                        <textarea class="form-control" name="description" [disabled]="isSubmitting" ngModel required></textarea> -->
+                        <div>
+                            <mat-form-field style="width: 100%">
+                                <mat-select placeholder="How can people access" name="access" [disabled]="isSubmitting" ngModel required>
+                                    <mat-option *ngFor="let option of accessOptions" [value]="option">
+                                    {{ option.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <!-- <label for="location">How can people access?</label>
+                            <select class="form-control" name="access" [disabled]="isSubmitting" ngModel required>
+                                <option *ngFor="let option of accessOptions" [ngValue]="option">{{option.name}}</option>
+                            </select> -->
+                        </div>
+                        <div class="form-group">
+                            <input id="locationSelector" type="checkbox" (change)="this.locationSelected = $event.target.checked">
+                            <label for="locationSelector">Location</label>
+                            <input *ngIf="locationSelected" class="form-control" name="location" [disabled]="isSubmitting" placeholder="Type in the name of a location" ngModel required>
+                        </div>
+                    </div>
+                    
+                    <div [hidden]="createStep != 1">
+                        <p>Select blocks of information that users should provide</p>
+                        <div *ngFor="let block of informationBlocks">
+                            <h3>{{block.name}} <a (click)="removeBlock(block)"><i class='fa fa-times'></i></a>
+                            </h3>
+                            <div *ngFor="let dateId of block.dateIds" class="row row-eq-height">
+                                <div class="col-md-7">
+                                    <mat-form-field style="width: 100%; vertical-align: bottom">
+                                        <input matInput  [matDatepicker]="startDatepicker" rangeStart="startDate" dateFormat="DD-MM-YYYY" placeholder="Choose a date" name="startDate-{{block.id}}-{{dateId}}" required ngModel>
+                                        <mat-datepicker-toggle matSuffix [for]="startDatepicker"></mat-datepicker-toggle>
+                                        <mat-datepicker  #startDatepicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field style="width: 100%">
+                                        <input matInput type="time" name="startTime-{{block.id}}-{{dateId}}" placeholder="Start time" required ngModel>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                    <mat-form-field style="width: 100%">
+                                        <input matInput type="time" name="endTime-{{block.id}}-{{dateId}}" placeholder="End time" required ngModel>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-1 col-align-bottom">
+                                    <a (click)="removeDateOption(block, dateId)"><i class='fa fa-times'></i></a>
+                                </div>
+                                </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <a (click)="addDateOption(block)" style="vertical-align: bottom">Add another date option</a>
+                                </div>
+                            </div>
+                            <hr/>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Add <span *ngIf="informationBlocks && informationBlocks.length > 0">more </span>information</label>
+                            <table><tbody>
+                                <tr>
+                                    <td style="width: 100%; padding-right:10px;">
+                                        <mat-form-field style="width: 100%">
+                                            <mat-select placeholder="Type of information to include" [(ngModel)]="selectedInformationType" [ngModelOptions]="{standalone: true}">
+                                                <mat-option *ngFor="let option of informationOptions" [value]="option">
+                                                {{ option.name }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </td>
+                                    <td>
+                                        <button class="btn" [disabled]="!selectedInformationType" type="button" (click)="addBlock()">Add</button>
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <hr/>
+                        <button *ngIf="createStep > 0" class="btn" (click)="stepBack()">Previous</button>
+                        <button [disabled]="!userForm.valid" class="btn btn-primary" type="submit">
+                            <span *ngIf="isSubmitting"><i class='fa fa-circle-o-notch fa-spin'></i> <span *ngIf="createStep < stepTitles.length-1">Next</span><span *ngIf="createStep == stepTitles.length-1">Submitting</span></span>
+                            <span *ngIf="!isSubmitting"><span *ngIf="createStep < stepTitles.length-1">Next</span><span *ngIf="createStep == stepTitles.length-1">Create</span></span>
+                        </button>
+                    </div>
+                </form> 
+            </div>
+        </div>
+    </div>
+</section>
+<site-footer></site-footer>

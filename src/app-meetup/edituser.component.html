@@ -1,0 +1,35 @@
+<site-header></site-header>
+<section class="body clearfix">
+    <h1>Edit user</h1>
+    <p>Please edit the necessary fields and click Submit.</p>
+    <div class="panel panel-default col-xs-offset-3 col-xs-6 ">
+        <div class="panel-body">
+            <form #userForm="ngForm" (ngSubmit)="onFormSubmit(userForm)">
+                <div>
+                    <mat-form-field style="width: 100%">
+                        <input matInput name="userName" placeholder="User name (can not be changed)" [disabled]="false" readonly ngModel >
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field style="width: 100%">
+                        <input matInput name="fullName" placeholder="Full name" [disabled]="isSubmitting" ngModel required >
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field style="width: 100%">
+                        <input matInput name="emailAddress" placeholder="Email address" [disabled]="isSubmitting" ngModel required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field style="width: 100%">
+                        <input matInput name="password" type="password" placeholder="Password" [disabled]="isSubmitting" ngModel required >
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <button [disabled]="!userForm.valid" class="btn btn-primary" type="submit"><span *ngIf="isSubmitting"><i class='fa fa-circle-o-notch fa-spin'></i> Submitting</span><span *ngIf="!isSubmitting">Submit</span></button>
+                </div>
+            </form> 
+        </div>
+    </div>
+</section>
+<site-footer></site-footer>

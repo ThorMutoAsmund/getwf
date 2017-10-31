@@ -1,0 +1,13 @@
+<table class="table table-striped">
+    <thead>
+        <tr><th>Title</th><th>Created</th><th>By</th><th></th></tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let meetup of meetups">
+            <td><strong>{{meetup.value.Title}}</strong></td>
+            <td>{{meetup.value.Created || '-'}}</td>
+            <td>{{meetup.value.Creator || '-'}}</td>
+            <td style="text-align: right"><a (click)="showMeetup(meetup.key)">Show</a></td>
+        </tr>
+    </tbody>
+</table>

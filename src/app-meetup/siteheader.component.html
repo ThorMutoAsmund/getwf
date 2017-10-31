@@ -1,0 +1,15 @@
+<section class="header">
+    <table style="width:100%">
+        <tr>
+            <td>
+                <h1><a href="/dashboard">Get With Friends!</a></h1>
+            </td>
+            <td style="text-align: right">
+                <div>
+                    <span *ngIf="(authenticationInfo | async)?.isAuthenticated">Logged in as <a href="/edituser">{{(authenticationInfo | async)?.user.FullName}}</a> | <a (click)="logOut()">Log out</a></span>
+                    <span *ngIf="!(authenticationInfo | async)?.isAuthenticated"><a (click)="logIn()">Log in</a></span>
+                </div>
+            </td>
+        </tr>
+    </table>
+</section>
