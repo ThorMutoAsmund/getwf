@@ -20,6 +20,10 @@ export class AuthenticationProvider {
         this.cookieService.put(userTokenCookieKey, token);
     }
 
+    public getUserName(): string {
+        return this.cookieService.get(userNameCookieKey);
+    }
+
     public async getAuthenticationInfo() : Promise<any> {
         let userName = this.cookieService.get(userNameCookieKey);
         if (!userName || userName === '') {
@@ -100,8 +104,10 @@ export class AuthenticationProvider {
         //delete this.userCache[userName];
     }
     
-    public async createAndAuthenticateUser(userName: string, fullName: string | null, password: string): Promise<boolean> {
+    public async createAndAuthenticateUser(userName: string, fullName: string, emailAddress: string, password: string): Promise<boolean> {
         if (!userName) throw "Null or empty user name";
+        if (!fullName) throw "Null or empty full name";
+        if (!emailAddress) throw "Null or empty email address";
         if (!password) throw "Null or empty password";
 
         let user = await this.meetupDatabase.findUser(userName);
@@ -109,7 +115,7 @@ export class AuthenticationProvider {
             return false;
         }
         else {
-            await this.meetupDatabase.createUser(userName, fullName, md5(password));
+            await this.meetupDatabase.createUser(userName, fullName, emailAddress, md5(password));
             let token = UUID.UUID();
 
             this.setAuthCookies(userName, token);
@@ -117,6 +123,19 @@ export class AuthenticationProvider {
             await this.meetupDatabase.updateUserToken(userName, token);
 
             //this.userCache[userName] = user;
+            return true;
+        }
+    }
+
+    public async updateUser(userName: string, fullName: string, emailAddress: string, password: string | null): Promise<boolean> {
+        if (!userName) throw "Null or empty user name";
+        let user = await this.meetupDatabase.findUser(userName);
+        if (!user) {
+            return false;
+        }
+        else {
+            await this.meetupDatabase.updateUser(userName, fullName, emailAddress, password ? md5(password) : null);
+
             return true;
         }
     }

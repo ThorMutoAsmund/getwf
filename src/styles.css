@@ -1,18 +1,83 @@
-/* You can add global styles to this file, and also import other style files */
-.thor {
-    color: blue;
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+body {
+    font-size: 15px;
 }
-.rolf {
-    color: blue;
+h1 {
+    font-size: 28px;
 }
 
-.ng-valid[required], .ng-valid.required  {
-    border-left: 5px solid #42A948; /* green */
+.panel {
+    padding-left: 0;
+    padding-right: 0;
+  }
+/*
+ * Row with equal height columns
+ * --------------------------------------------------
+ */
+ .row-eq-height {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+/* You can add global styles to this file, and also import other style files */
+section.header {
+    background-color: #fF575d;
+    color: #fff;
+    padding: 20px 180px;
+}
+section.header h1 {
+    font-size: 36px;
+    font-family: "Trebuchet MS", sans-serif;
+}
+section.header a {
+    color: #ddd;
+}
+section.header h1 > a {
+    color: #fff;
+}
+
+section.footer {
+    background-color: #3d77eF;
+    color: #fff;
+    padding: 20px 180px;
+}
+
+section.footer a {
+    color: #ddd;
+}
+
+section.footer h1 {
+    font-size: 24px;
+    font-family: "Trebuchet MS", sans-serif;
+}
+
+section.footer h2 {
+    font-size: 18px;
+    font-family: "Trebuchet MS", sans-serif;
+}
+
+section.footer h3 {
+    font-size: 14px;
+}
+
+section.body {
+    background-color: #FFF;
+    color: #222;
+    padding: 20px 180px;
+    padding-bottom:80px;
+}
+
+
+/* .ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid #42A948;
 }
 
 .ng-invalid:not(form)  {
-    border-left: 5px solid #a94442; /* red */
-}
+    border-left: 5px solid #a94442;
+} */
 
 h1,h2 {
     font-weight: bold
@@ -20,4 +85,11 @@ h1,h2 {
 
 a:hover {
     cursor:pointer;
+}
+a > .fa {
+    color: #222;
+}
+
+.nav-tabs {
+    margin-bottom: 1rem;
 }

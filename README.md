@@ -77,3 +77,7 @@ https://blog.angular.io/improved-querying-and-offline-data-with-angularfirestore
 ## When to reject a promise
 
 https://stackoverflow.com/questions/17293546/when-to-reject-resolve-a-promise
+
+## Mat-datepicker
+
+https://github.com/angular/material2/blob/master/src/lib/datepicker/datepicker.md

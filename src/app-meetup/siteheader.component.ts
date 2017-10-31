@@ -5,8 +5,8 @@ import { authenticatePath } from './routes';
 
 @Component({
   selector: 'site-header',
-  template: '<div style="text-align: right"><span *ngIf="(authenticationInfo | async)?.isAuthenticated">Logged in as {{(authenticationInfo | async)?.user.FullName}} | <a (click)="logOut()">Log out</a></span><span *ngIf="!(authenticationInfo | async)?.isAuthenticated"><a (click)="logIn()">Log in</a></span></div><hr/>'
-}) // <span *ngIf="isAuthenticated">Logged in</span>
+  templateUrl: './siteheader.component.html' 
+})
 export class SiteHeaderComponent {
     authenticationInfo: Promise<any>;
     authenticatedName: string;

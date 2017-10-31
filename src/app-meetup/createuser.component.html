@@ -1,24 +1,36 @@
 <site-header></site-header>
-<h1>Create user</h1>
-<p>Please fill in all fields and click Submit.</p>
-<div class="panel panel-default col-xs-offset-3 col-xs-6 ">
-    <div class="panel-body">
-        <form class="form-horizontal" #userForm="ngForm" (ngSubmit)="onFormSubmit(userForm)">
-            <div class="form-group">
-                <label for="userName">User name</label>
-                <input class="form-control" name="userName" [disabled]="isSubmitting" placeholder="Enter desired user name" ngModel required>
-            </div>
-            <div class="form-group">
-                <label for="fullName">Full name</label>
-                <input class="form-control" name="fullName" [disabled]="isSubmitting" placeholder="Enter your full name" ngModel required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input class="form-control" name="password" type="password" [disabled]="isSubmitting" placeholder="Choose a password of 8 or more characters" ngModel required>
-            </div>
-            <div class="form-group">
-                <button [disabled]="!userForm.valid" class="btn btn-primary" type="submit"><span *ngIf="isSubmitting"><i class='fa fa-circle-o-notch fa-spin'></i> Submitting</span><span *ngIf="!isSubmitting">Submit</span></button>
-            </div>
-        </form> 
+<section class="body clearfix">
+    <h1>Create user</h1>
+    <p>Please fill in all fields and click Submit.</p>
+    <div class="panel panel-default col-xs-offset-3 col-xs-6 ">
+        <div class="panel-body">
+            <form #userForm="ngForm" (ngSubmit)="onFormSubmit(userForm)">
+                <div>
+                    <mat-form-field style="width: 100%">
+                        <input matInput name="userName" placeholder="Enter desired user name" [disabled]="isSubmitting" ngModel required >
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field style="width: 100%">
+                        <input matInput name="fullName" placeholder="Enter your full name" [disabled]="isSubmitting" ngModel required >
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field style="width: 100%">
+                        <input matInput name="emailAddress" placeholder="Enter your email address" [disabled]="isSubmitting" ngModel required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field style="width: 100%">
+                        <input matInput name="password" type="password" placeholder="Choose a password of 8 or more characters" [disabled]="isSubmitting" ngModel required >
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <hr />
+                    <button [disabled]="!userForm.valid" class="btn btn-primary" type="submit"><span *ngIf="isSubmitting"><i class='fa fa-circle-o-notch fa-spin'></i> Submitting</span><span *ngIf="!isSubmitting">Submit</span></button>
+                </div>
+            </form> 
+        </div>
     </div>
-</div>
+</section>
+<site-footer></site-footer>

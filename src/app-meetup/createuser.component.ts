@@ -16,7 +16,7 @@ export class CreateUserComponent {
         let result;
         try {
             this.isSubmitting = true;
-            result = await this.authenticationProvider.createAndAuthenticateUser(form.value.userName, form.value.fullName, form.value.password)
+            result = await this.authenticationProvider.createAndAuthenticateUser(form.value.userName, form.value.fullName, form.value.emailAddress, form.value.password)
         }
         catch (reason) {
             this.isSubmitting = false;

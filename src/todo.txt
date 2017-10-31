@@ -4,5 +4,14 @@ Find ud af hvordan reject skal bruges
 
 Error handling, error flow
 
+Security.. everything is client side, so how to avoid spoofing login'd user name?
+
 Look at generators again in an async/await context
 https://basarat.gitbooks.io/typescript/docs/async-await.html
+
+Should this function be async?
+    public updateUserToken(userName: string, token: string): Promise<void> {
+        if (!userName) throw "Null or empty user name";
+
+        return this.db.ref(`${userTable}/${userName}`).update({ Token: token });
+    }
